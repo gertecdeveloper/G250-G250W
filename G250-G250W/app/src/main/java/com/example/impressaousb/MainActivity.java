@@ -135,7 +135,7 @@ public class MainActivity extends AppCompatActivity {
                     );
         } catch (NumberFormatException e) {
             new AlertDialog.Builder(this)
-                    .setTitle("Invalid TCP port address")
+                    .setTitle("Endereço de ´porta TCP inválido")
                     .setMessage("Port field must be an integer.")
                     .show();
             e.printStackTrace();
