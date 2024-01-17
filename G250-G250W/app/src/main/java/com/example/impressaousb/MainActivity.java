@@ -42,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        //Configuração de imprimir via USB
         binding.btnImprimirUSB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -49,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        //Configuração de imprimir via TCP
         binding.btnImprimirIP.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -58,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    //Configuração da conexão USB
     private static final String ACTION_USB_PERMISSION = "com.android.example.USB_PERMISSION";
     private final BroadcastReceiver usbReceiver = new BroadcastReceiver() {
         public void onReceive(Context context, Intent intent) {
@@ -89,7 +92,6 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     };
-
     public void printUsb() {
         UsbConnection usbConnection = UsbPrintersConnections.selectFirstConnected(this);
         UsbManager usbManager = (UsbManager) this.getSystemService(Context.USB_SERVICE);
@@ -106,6 +108,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    //Configuração da conexão TCP
     public void printTcp() {
         final EditText ipAddress = (EditText) this.findViewById(R.id.editIP);
         final EditText portAddress = (EditText) this.findViewById(R.id.editPorta);
@@ -135,49 +138,23 @@ public class MainActivity extends AppCompatActivity {
                     );
         } catch (NumberFormatException e) {
             new AlertDialog.Builder(this)
-                    .setTitle("Endereço de ´porta TCP inválido")
+                    .setTitle("Endereço de porta TCP inválido")
                     .setMessage("Port field must be an integer.")
                     .show();
             e.printStackTrace();
         }
     }
 
-    
-
-
+    // TEXTO PARA IMPRESSÃO
     @SuppressLint("SimpleDateFormat")
     public AsyncEscPosPrinter getAsyncEscPosPrinter(DeviceConnection printerConnection) {
-        SimpleDateFormat format = new SimpleDateFormat("'on' yyyy-MM-dd 'at' HH:mm:ss");
-        AsyncEscPosPrinter printer = new AsyncEscPosPrinter(printerConnection, 203, 48f, 32);
+        AsyncEscPosPrinter printer = new AsyncEscPosPrinter(printerConnection, 203, 80f, 32);
+
+        String html;
+        String String;
         return printer.addTextToPrint(
-                        "[L]\n" +
-                        "[C]<u><font size='big'>ORDEM N°045</font></u>\n" +
-                        "[L]\n" +
-                        "[C]<u type='double'>" + format.format(new Date()) + "</u>\n" +
-                        "[C]\n" +
-                        "[C]================================\n" +
-                        "[L]\n" +
-                        "[L]<b>CAMISETA</b>[R]9.99€\n" +
-                        "[L]  + TAMANHO : S\n" +
-                        "[L]\n" +
-                        "[L]<b>CHAPÉU</b>[R]24.99$\n" +
-                        "[L]  + TAMANHO : 57/58\n" +
-                        "[L]\n" +
-                        "[C]--------------------------------\n" +
-                        "[R]PREÇO TOAL :[R]34.98$\n" +
-                        "[R]TAX :[R]4.23$\n" +
-                        "[L]\n" +
-                        "[C]================================\n" +
-                        "[L]\n" +
-                        "[L]<u><font color='bg-black' size='tall'>Customer :</font></u>\n" +
-                        "[L]Raymond DUPONT\n" +
-                        "[L]Rua das Girafas\n" +
-                        "[L]31547 PERPETES\n" +
-                        "[L]Tel : +55801201456\n" +
-                        "\n" +
-                        "[C]<barcode type='ean13' height='10'>831254784551</barcode>\n" +
-                        "[L]\n" +
-                        "[C]<qrcode size='20'>http://www.developpeur-web.dantsu.com/</qrcode>\n"
+                "[C]<qrcode size='30'>https://gertec.com.br/</qrcode>\n" +
+                        "[L]|\n"
         );
     }
 }
